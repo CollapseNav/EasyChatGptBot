@@ -1,4 +1,5 @@
 using System.Data;
+using Collapsenav.Net.Tool;
 using EleCho.GoCqHttpSdk.Message;
 using EleCho.GoCqHttpSdk.Post;
 
