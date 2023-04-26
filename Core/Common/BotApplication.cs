@@ -1,9 +1,16 @@
+using System.Collections.Concurrent;
 using Collapsenav.Net.Tool;
 
 namespace EasyChatGptBot;
 
-public abstract class BotApplication : IBotApplication
+public abstract class BotApplication : IBotApplication, IAddMsg<IBotMsg>
 {
+    protected BotApplication()
+    {
+        Msgs = new();
+    }
+
+    protected ConcurrentQueue<IBotMsg> Msgs { get; set; }
     public static BotApplicationBuilder CreateBuilder()
     {
         return new BotApplicationBuilder();
@@ -12,9 +19,9 @@ public abstract class BotApplication : IBotApplication
     /// <summary>
     /// 添加消息
     /// </summary>
-    public async Task AddMsgAsync(IBotMsg msg)
+    public void AddMsg(IBotMsg msg)
     {
-        await Console.Out.WriteLineAsync(msg.ToJson());
+        Msgs.Enqueue(msg);
     }
     /// <summary>
     /// TODO 添加中间件

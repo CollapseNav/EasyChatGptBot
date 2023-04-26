@@ -31,8 +31,8 @@ public static class QQExt
             CqWsSession session = new(option);
             session.UseGroupMessage(async context =>
             {
-                var msg = QQGroupAtMsg.CreateMsg(context);
-                await application.AddMsgAsync(msg);
+                var msg = QQGroupMsg.CreateMsg(context);
+                application.AddMsg(msg);
             });
             await session.StartAsync();
             await session.WaitForShutdownAsync();
