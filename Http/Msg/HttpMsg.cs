@@ -13,6 +13,12 @@ public class HttpMsg : BotMsg
         InitMsg(this, context);
         this.context = context;
     }
+
+    public void Response(string data)
+    {
+        context.Response.OutputStream.Write(data.ToBytes());
+        context.Response.Close();
+    }
     public static HttpMsg CreateMsg(HttpListenerContext context)
     {
         return InitMsg(new HttpMsg(), context);

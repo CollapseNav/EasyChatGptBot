@@ -1,10 +1,7 @@
 namespace EasyChatGptBot;
-public class QQBotApplication : BotApplication, IAddMsg<QQGroupMsg>
+public class QQBotApplication : BotApplication
 {
-    public void AddMsg(QQGroupMsg msg)
-    {
-        Msgs.Enqueue(msg);
-    }
+    public QQBotApplication(IMsgPipeline pipeline) : base(pipeline) { }
 
     public override async Task RunAsync()
     {

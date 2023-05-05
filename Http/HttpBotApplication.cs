@@ -1,15 +1,18 @@
+using Collapsenav.Net.Tool;
+
 namespace EasyChatGptBot;
 
-public class HttpBotApplication : BotApplication, IAddMsg<HttpMsg>
+public class HttpBotApplication : BotApplication
 {
-    public void AddMsg(HttpMsg msg)
-    {
-        Msgs.Enqueue(msg);
-    }
+    public HttpBotApplication(IMsgPipeline pipeline) : base(pipeline) { }
 
     public override async Task RunAsync()
     {
         while (true)
-            await Task.Delay(2333);
+        {
+            var msg = await pipeline.GetMsgAsync() as HttpMsg;
+            Console.WriteLine(msg.ToJson());
+            msg.Response(msg.ToJson());
+        }
     }
 }

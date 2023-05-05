@@ -37,7 +37,8 @@ public static class QQExt
             await session.StartAsync();
             await session.WaitForShutdownAsync();
         });
-        builder.Add(new QQBotApplication());
+        builder.AddType<QQBotApplication>();
+        builder.AddType<MsgPipeLine>();
         return builder;
     }
 }

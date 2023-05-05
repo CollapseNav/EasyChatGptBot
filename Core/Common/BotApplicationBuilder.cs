@@ -23,6 +23,15 @@ public class BotApplicationBuilder
         Container.AddOrUpdate(obj);
         return this;
     }
+
+    /// <summary>
+    /// 注册类型
+    /// </summary>
+    public BotApplicationBuilder AddType<T>()
+    {
+        Container.AddType<T>();
+        return this;
+    }
     /// <summary>
     /// 构建 botapplication
     /// </summary>

@@ -1,5 +1,4 @@
 using System.Net;
-using Collapsenav.Net.Tool;
 
 namespace EasyChatGptBot;
 
@@ -21,7 +20,8 @@ public static class HttpExt
                 application.AddMsg(botMsg);
             }
         });
-        builder.Add(new HttpBotApplication());
+        builder.AddType<HttpBotApplication>();
+        builder.AddType<MsgPipeLine>();
         return builder;
     }
 }
