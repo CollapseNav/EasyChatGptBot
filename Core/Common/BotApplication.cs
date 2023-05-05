@@ -4,11 +4,13 @@ public abstract class BotApplication : IBotApplication, IAddMsg<IBotMsg>
 {
     protected List<Func<IBotMsg, Func<Task>, Task>> MiddleWares;
     protected readonly IMsgPipeline pipeline;
+    protected readonly ObjContainer container;
 
-    protected BotApplication(IMsgPipeline pipeline)
+    protected BotApplication(IMsgPipeline pipeline, ObjContainer container)
     {
         MiddleWares = new();
         this.pipeline = pipeline;
+        this.container = container;
     }
 
     /// <summary>
@@ -47,7 +49,26 @@ public abstract class BotApplication : IBotApplication, IAddMsg<IBotMsg>
     /// </summary>
     public IBotApplication Use(Func<IBotMsg, Func<Task>, Task> middleware)
     {
+        MiddleWares.Add(middleware);
+        return this;
+    }
+
+    public IBotApplication Use<T>() where T : class, IMiddleware
+    {
+        container.AddType<T>();
+        var middleware = container.GetObj<T>();
+        MiddleWares.Add((botMsg, next) =>
+        {
+            return middleware.Invoke(botMsg, next);
+        });
         return this;
     }
     public abstract Task RunAsync();
+
+    protected Func<Task> ExecMiddleware(IBotMsg botMsg, int index = 0, CancellationToken? cancellationToken = null)
+    {
+        if ((cancellationToken?.IsCancellationRequested ?? false) || index == MiddleWares.Count)
+            return () => Task.CompletedTask;
+        return () => MiddleWares[index](botMsg, ExecMiddleware(botMsg, index + 1, cancellationToken));
+    }
 }

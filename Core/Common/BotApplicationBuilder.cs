@@ -37,6 +37,7 @@ public class BotApplicationBuilder
     /// </summary>
     public BotApplication Build()
     {
+        Container.AddOrUpdate(Container);
         var botapplication = Container.GetObj<BotApplication>();
         foreach (var action in Actions)
             action(botapplication, Container);
