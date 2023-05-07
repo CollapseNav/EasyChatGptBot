@@ -15,9 +15,14 @@ public class ObjContainer
 
     public Dictionary<Type, object> ObjMap { get; set; }
     public List<Type> Types { get; set; }
-
+    /// <summary>
+    /// 所有已经注册过的 Type
+    /// </summary>
     public List<Type> AllTypes { get => ObjMap.Keys.Concat(Types).Unique().ToList(); }
 
+    /// <summary>
+    /// 直接注册单实例的对象
+    /// </summary>
     public ObjContainer AddOrUpdate(Type type, object obj)
     {
         if (obj == null)
@@ -28,11 +33,17 @@ public class ObjContainer
             ObjMap.Add(type, obj);
         return this;
     }
+    /// <summary>
+    /// 直接注册单实例的对象
+    /// </summary>
     public ObjContainer AddOrUpdate<T>(T obj)
     {
         return AddOrUpdate(typeof(T), obj);
     }
 
+    /// <summary>
+    /// 获取对象
+    /// </summary>
     public object GetObj(Type type)
     {
         var keys = ObjMap.Keys.Where(item => item.IsType(type));
@@ -49,11 +60,17 @@ public class ObjContainer
             AddOrUpdate(type, obj);
         return obj;
     }
+    /// <summary>
+    /// 获取对象
+    /// </summary>
     public T GetObj<T>() where T : class
     {
         return (GetObj(typeof(T)) as T)!;
     }
 
+    /// <summary>
+    /// 创建对象
+    /// </summary>
     public object ConstructObject(Type type)
     {
         var cons = type.GetConstructors();
@@ -66,6 +83,9 @@ public class ObjContainer
         var parameters = parameterTypes.Select(item => GetObj(item)).ToArray();
         return Activator.CreateInstance(type, parameters)!;
     }
+    /// <summary>
+    /// 注册type
+    /// </summary>
     public ObjContainer AddType<T>()
     {
         if (Types.Contains(typeof(T)))

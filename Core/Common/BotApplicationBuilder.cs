@@ -10,7 +10,7 @@ public class BotApplicationBuilder
         Actions = new();
     }
 
-    public BotApplicationBuilder AddAction(Action<BotApplication, ObjContainer> action)
+    public BotApplicationBuilder AddAction(Action<IBotApplication, ObjContainer> action)
     {
         Actions.Add(action);
         return this;

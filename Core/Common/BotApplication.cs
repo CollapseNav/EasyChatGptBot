@@ -2,7 +2,13 @@ namespace EasyChatGptBot;
 
 public abstract class BotApplication : IBotApplication, IAddMsg<IBotMsg>
 {
+    /// <summary>
+    /// 中间件集合
+    /// </summary>
     protected List<Func<IBotMsg, Func<Task>, Task>> MiddleWares;
+    /// <summary>
+    /// 消息管道
+    /// </summary>
     protected readonly IMsgPipeline pipeline;
     protected readonly ObjContainer container;
 

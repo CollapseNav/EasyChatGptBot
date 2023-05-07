@@ -5,6 +5,7 @@ namespace EasyChatGptBot;
 public abstract class BotMsg : IBotMsg
 {
     public string? Msg { get; protected set; }
+    public abstract void Response(string content);
 }
 public abstract class BotMsg<T> : BotMsg, IBotMsg<T>
 {

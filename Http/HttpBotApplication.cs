@@ -1,7 +1,4 @@
-using Collapsenav.Net.Tool;
-
 namespace EasyChatGptBot;
-
 public class HttpBotApplication : BotApplication
 {
     public HttpBotApplication(IMsgPipeline pipeline, ObjContainer container) : base(pipeline, container)

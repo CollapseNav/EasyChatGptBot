@@ -1,4 +1,5 @@
 using System.Data;
+using EleCho.GoCqHttpSdk;
 using EleCho.GoCqHttpSdk.Message;
 using EleCho.GoCqHttpSdk.Post;
 namespace EasyChatGptBot;
@@ -7,17 +8,33 @@ namespace EasyChatGptBot;
 /// </summary>
 public class QQGroupMsg : BotMsg<QQSimpleUser>
 {
-    public QQGroupMsg() { }
+    /// <summary>
+    /// 群号
+    /// </summary>
+    public long? GroupId { get; set; }
+    private readonly CqWsSession session;
+    public QQGroupMsg(CqWsSession session)
+    {
+        this.session = session;
+    }
+    public QQGroupMsg(CqGroupMessagePostContext context, CqWsSession session)
+    {
+        this.session = session;
+        InitMsg(this, context);
+    }
     public QQGroupMsg(CqGroupMessagePostContext context)
     {
         InitMsg(this, context);
     }
+
+    public QQGroupMsg() { }
+
     /// <summary>
     /// 通过context创建消息
     /// </summary>
-    public static QQGroupMsg CreateMsg(CqGroupMessagePostContext context)
+    public static QQGroupMsg CreateMsg(CqGroupMessagePostContext context, CqWsSession session)
     {
-        return InitMsg(new QQGroupMsg(), context);
+        return InitMsg(new QQGroupMsg(session), context);
     }
     /// <summary>
     /// 通过context初始化群at消息
@@ -26,15 +43,32 @@ public class QQGroupMsg : BotMsg<QQSimpleUser>
     {
         if (botMsg == null || context == null)
             throw new NoNullAllowedException();
+        botMsg.InitByMsgContext(context);
+        if (botMsg.To.Any(item => item.UserId == context.SelfId))
+            return botMsg;
+        return null;
+    }
+
+    public override void Response(string data)
+    {
+        if (!GroupId.HasValue)
+            throw new Exception();
+        session.SendGroupMessageAsync(GroupId.Value, new CqMessage{
+            new CqTextMsg(data)
+        }).Wait();
+    }
+
+    public void InitByMsgContext(CqGroupMessagePostContext context)
+    {
         var msg = context.Message;
-        botMsg.Msg = msg.Text.Trim();
+        GroupId = context.GroupId;
+        Msg = context.Message.Text;
+        From = new QQSimpleUser(context.UserId, context?.Sender?.Nickname); ;
         var atmsg = msg.Where(item => item is CqAtMsg).ToList();
-        botMsg.To = atmsg.Select(item =>
+        To = atmsg.Select(item =>
         {
             var at = (item as CqAtMsg)!;
             return new QQSimpleUser(at.Target, at.Name);
         }).ToArray();
-        botMsg.From = new QQSimpleUser(context.UserId, context?.Sender?.Nickname);
-        return botMsg;
     }
 }

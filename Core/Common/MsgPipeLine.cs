@@ -7,6 +7,9 @@ namespace EasyChatGptBot;
 /// </summary>
 public class MsgPipeLine : IMsgPipeline
 {
+    /// <summary>
+    /// bot接收消息的队列
+    /// </summary>
     private ConcurrentQueue<IBotMsg> MsgQueue;
     public MsgPipeLine()
     {

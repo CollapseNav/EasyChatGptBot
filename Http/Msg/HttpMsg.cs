@@ -14,7 +14,7 @@ public class HttpMsg : BotMsg
         this.context = context;
     }
 
-    public void Response(string data)
+    public override void Response(string data)
     {
         context.Response.OutputStream.Write(data.ToBytes());
         context.Response.Close();

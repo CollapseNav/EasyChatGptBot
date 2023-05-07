@@ -9,6 +9,7 @@ public interface IBotMsg
     /// 消息
     /// </summary>
     string? Msg { get; }
+    void Response(string content);
 }
 /// <summary>
 /// 包含发送人和接收人的消息

@@ -8,6 +8,9 @@ public class QQBotApplication : BotApplication
     public override async Task RunAsync()
     {
         while (true)
-            await Task.Delay(2333);
+        {
+            var msg = await pipeline.GetMsgAsync() as QQGroupMsg;
+            await ExecMiddleware(msg).Invoke();
+        }
     }
 }
