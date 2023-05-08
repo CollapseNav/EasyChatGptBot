@@ -1,6 +1,6 @@
 namespace EasyChatGptBot;
 
-public abstract class BotApplication : IBotApplication, IAddMsg<IBotMsg>
+public abstract class BotApplication : IBotApplication
 {
     /// <summary>
     /// 中间件集合

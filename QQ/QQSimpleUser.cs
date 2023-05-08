@@ -3,7 +3,7 @@ namespace EasyChatGptBot;
 /// <summary>
 /// qq用户
 /// </summary>
-public class QQSimpleUser
+public class QQSimpleUser : IChatSessionKey
 {
     public QQSimpleUser() { }
 

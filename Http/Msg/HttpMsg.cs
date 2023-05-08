@@ -4,7 +4,7 @@ using Collapsenav.Net.Tool;
 
 namespace EasyChatGptBot;
 
-public class HttpMsg : BotMsg
+public class HttpMsg : BotMsg<HttpSimpleUser>
 {
     protected readonly HttpListenerContext context;
     public HttpMsg() { }
@@ -29,6 +29,10 @@ public class HttpMsg : BotMsg
             throw new NoNullAllowedException();
         using var ms = new MemoryStream();
         context.Request.InputStream.CopyTo(ms);
+        var name = context.Request.Headers["Name"];
+        if (name.NotEmpty())
+            botMsg.From = new HttpSimpleUser(name);
+
         var msg = ms.ToBytes().BytesToString();
         botMsg.Msg = msg;
         return botMsg;
