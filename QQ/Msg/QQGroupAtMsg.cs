@@ -3,10 +3,11 @@ using EleCho.GoCqHttpSdk;
 using EleCho.GoCqHttpSdk.Message;
 using EleCho.GoCqHttpSdk.Post;
 namespace EasyChatGptBot;
+
 /// <summary>
 /// qq群at消息
 /// </summary>
-public class QQGroupMsg : BotMsg<QQSimpleUser>
+public class QQGroupMsg : BotMsg<QQGroupUser, QQGroupUser>
 {
     /// <summary>
     /// 群号
@@ -61,14 +62,13 @@ public class QQGroupMsg : BotMsg<QQSimpleUser>
     public void InitByMsgContext(CqGroupMessagePostContext context)
     {
         var msg = context.Message;
-        GroupId = context.GroupId;
         Msg = context.Message.Text;
-        From = new QQSimpleUser(context.UserId, context?.Sender?.Nickname); ;
+        From = new QQGroupUser(context.UserId, context?.Sender?.Nickname, context.GroupId); ;
         var atmsg = msg.Where(item => item is CqAtMsg).ToList();
         To = atmsg.Select(item =>
         {
             var at = (item as CqAtMsg)!;
-            return new QQSimpleUser(at.Target, at.Name);
+            return new QQGroupUser(at.Target, at.Name, context.GroupId);
         }).ToArray();
     }
 }

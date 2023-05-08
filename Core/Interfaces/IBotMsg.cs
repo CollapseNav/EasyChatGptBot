@@ -12,11 +12,18 @@ public interface IBotMsg
     void Response(string content);
 }
 /// <summary>
-/// 包含发送人和接收人的消息
+/// 包含发送人的消息
 /// </summary>
 public interface IBotMsg<T> : IBotMsg
 {
     T? From { get; }
-    T[]? To { get; }
+}
+
+/// <summary>
+/// 包含发送人和接收人的消息
+/// </summary>
+public interface IBotMsg<T, E> : IBotMsg<T>
+{
+    E[]? To { get; }
 }
 

@@ -10,5 +10,9 @@ public abstract class BotMsg : IBotMsg
 public abstract class BotMsg<T> : BotMsg, IBotMsg<T>
 {
     public T? From { get; protected set; }
-    public T[]? To { get; protected set; }
+}
+
+public abstract class BotMsg<T, E> : BotMsg<T>, IBotMsg<T, E>
+{
+    public E[]? To { get; protected set; }
 }
