@@ -4,14 +4,13 @@ namespace EasyChatGptBot;
 
 public static class HttpExt
 {
-    public static BotApplicationBuilder AddHttpBot(this BotApplicationBuilder builder, string listen)
+    public static BotApplicationBuilder AddHttpBot(this BotApplicationBuilder builder, params string[] listen)
     {
         builder.AddAction(async (application, container) =>
         {
-            if (!listen.EndsWith("/"))
-                listen += "/";
             HttpListener listener = new();
-            listener.Prefixes.Add(listen);
+            foreach (var ip in listen)
+                listener.Prefixes.Add(ip.EndsWith("/") ? ip : (ip + "/"));
             listener.Start();
             while (true)
             {

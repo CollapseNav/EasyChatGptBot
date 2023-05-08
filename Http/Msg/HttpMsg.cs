@@ -6,7 +6,7 @@ namespace EasyChatGptBot;
 
 public class HttpMsg : BotMsg
 {
-    private readonly HttpListenerContext context;
+    protected readonly HttpListenerContext context;
     public HttpMsg() { }
     public HttpMsg(HttpListenerContext context)
     {

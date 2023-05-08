@@ -15,9 +15,9 @@ public class MsgPipeLine : IMsgPipeline
     {
         MsgQueue = new();
     }
-    public void AddMsg(IBotMsg botMsg) => MsgQueue.Enqueue(botMsg);
-    public void Clear() => MsgQueue.Clear();
-    public IBotMsg GetMsg()
+    public virtual void AddMsg(IBotMsg botMsg) => MsgQueue.Enqueue(botMsg);
+    public virtual void Clear() => MsgQueue.Clear();
+    public virtual IBotMsg GetMsg()
     {
         if (MsgQueue.TryDequeue(out var msg))
             return msg;
@@ -31,7 +31,7 @@ public class MsgPipeLine : IMsgPipeline
             } while (true);
         }
     }
-    public async Task<IBotMsg> GetMsgAsync()
+    public virtual async Task<IBotMsg> GetMsgAsync()
     {
         if (MsgQueue.TryDequeue(out var msg))
             return msg;
