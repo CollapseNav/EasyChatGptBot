@@ -3,12 +3,14 @@ namespace EasyChatGptBot;
 public class ChatSessionManager<T> where T : IChatSessionKey
 {
     private readonly OpenAIConfig config;
+    private readonly HttpClient client;
     protected Dictionary<T, IOpenAiChatSession> Sessions;
 
-    public ChatSessionManager(OpenAIConfig config)
+    public ChatSessionManager(OpenAIConfig config, HttpClient client)
     {
         Sessions = new();
         this.config = config;
+        this.client = client;
     }
 
     public bool HasSession(T key)
@@ -19,7 +21,7 @@ public class ChatSessionManager<T> where T : IChatSessionKey
     public IOpenAiChatSession GetSession(T key)
     {
         if (!HasSession(key))
-            Sessions.Add(key, new BaseChatSession(config));
+            Sessions.Add(key, new BaseChatSession(config, client));
         return Sessions[key];
     }
 

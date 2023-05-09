@@ -1,34 +1,28 @@
 namespace EasyChatGptBot;
 
-public record class davinci_result
+public class OpenAiChatResult
 {
-    public record class davinci_result_choice
-    {
-        public record class davinci_result_choice_message
-        {
-            public string role { get; set; } = string.Empty;
-            public string content { get; set; } = string.Empty;
-        }
-        public int index { get; set; }
-        public davinci_result_choice_message? message { get; set; }
-        public string finish_reason { get; set; } = string.Empty;
-    }
-    public record class davinci_result_usage
-    {
-        public int prompt_tokens { get; set; }
-        public int completion_tokens { get; set; }
-        public int total_tokens { get; set; }
-    }
-    public record class davinci_result_error
-    {
-        public string message { get; set; } = string.Empty;
-        public string type { get; set; } = string.Empty;
-    }
-
-    public string id { get; set; } = string.Empty;
-    public string @object { get; set; } = string.Empty;
-    public int created { get; set; }
-    public davinci_result_choice[]? choices { get; set; }
-    public davinci_result_usage? usage { get; set; }
-    public davinci_result_error? error { get; set; }
+    public string Id { get; set; } = string.Empty;
+    public string @Object { get; set; } = string.Empty;
+    public int Created { get; set; }
+    public OpenAiChatResultChoice[]? Choices { get; set; }
+    public OpenAiChatResultUsage? Usage { get; set; }
+    public OpenAiChatResultError? Error { get; set; }
+}
+public class OpenAiChatResultError
+{
+    public string Message { get; set; } = string.Empty;
+    public string Type { get; set; } = string.Empty;
+}
+public class OpenAiChatResultUsage
+{
+    public int Prompt_tokens { get; set; }
+    public int Completion_tokens { get; set; }
+    public int Total_tokens { get; set; }
+}
+public class OpenAiChatResultChoice
+{
+    public int Index { get; set; }
+    public OpenAIChatUnit? Message { get; set; }
+    public string Finish_reason { get; set; } = string.Empty;
 }

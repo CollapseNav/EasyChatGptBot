@@ -16,7 +16,7 @@ public interface IOpenAiChatSession
     /// <summary>
     /// chat历史
     /// </summary>
-    Queue<KeyValuePair<string, string>> History { get; }
+    Queue<OpenAIChatUnit> History { get; }
     /// <summary>
     /// 问chatgpt
     /// </summary>
