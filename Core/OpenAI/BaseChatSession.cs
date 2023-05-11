@@ -29,7 +29,7 @@ public class BaseChatSession : IOpenAiChatSession
             Headers = {
                 {"Authorization", $"Bearer {config.ApiKey}"}
             },
-            Content = JsonContent.Create(new
+            Content = JsonContent.Create(new OpenAIChatRequestModel
             {
                 model = config.GptModel,
                 max_tokens = config.MaxLen,

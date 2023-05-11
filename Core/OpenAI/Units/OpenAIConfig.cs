@@ -2,13 +2,6 @@ namespace EasyChatGptBot;
 
 public class OpenAIConfig : IStartInit
 {
-    public OpenAIConfig() { }
-
-    public OpenAIConfig(string apiKey)
-    {
-        ApiKey = apiKey;
-    }
-
     public string ApiKey { get; set; }
     public string GptModel { get; set; } = "gpt-3.5-turbo";
     public decimal Temperature { get; set; } = 0.5m;

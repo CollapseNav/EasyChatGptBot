@@ -1,0 +1,10 @@
+{
+    "ChatConfig": {
+        "LimitTime": 300,
+        "LimitCount": 5,
+        "MaxHistory": 20
+    },
+    "OpenAIConfig": {
+        "ApiKey": "******"
+    }
+}

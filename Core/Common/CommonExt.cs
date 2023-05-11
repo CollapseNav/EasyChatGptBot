@@ -11,4 +11,22 @@ public static class CommonExt
     {
         return builder.Add(config);
     }
+
+    public static BotApplicationBuilder AddJsonConfig<T>(this BotApplicationBuilder builder, string nodePath)
+    {
+        builder.AddAction((application, container) =>
+        {
+            var configuration = container.GetObj<SimpleJsonConfiguration>();
+            builder.Add(new Config<T>(configuration, nodePath));
+        });
+        return builder;
+    }
+
+    public static BotApplicationBuilder AddAppConfig(this BotApplicationBuilder builder, string path, bool reloadOnChanage = true)
+    {
+        builder.Add(new SimpleJsonConfiguration(path, reloadOnChanage));
+        builder.AddType<OpenAIConfig>();
+        builder.AddType<OpenAIChatConfig>();
+        return builder;
+    }
 }

@@ -1,13 +1,21 @@
+using System.Text.Json.Nodes;
+
 namespace EasyChatGptBot;
 
 public class BotApplicationBuilder
 {
+    protected JsonArray ConfigArray
+    {
+        get => new(NodeDict.Values.ToArray());
+    }
+    protected Dictionary<string, JsonNode> NodeDict { get; set; }
     public List<Action<BotApplication, ObjContainer>> Actions { get; set; }
     public ObjContainer Container { get; set; }
     public BotApplicationBuilder()
     {
         Container = new ObjContainer();
         Actions = new();
+        NodeDict = new();
     }
 
     public BotApplicationBuilder AddAction(Action<IBotApplication, ObjContainer> action)
@@ -42,5 +50,11 @@ public class BotApplicationBuilder
         foreach (var action in Actions)
             action(botapplication, Container);
         return botapplication;
+    }
+
+    public BotApplicationBuilder AddJsonConfig(string configPath)
+    {
+
+        return this;
     }
 }

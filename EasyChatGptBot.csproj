@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="EleCho.GoCqHttpSdk" Version="1.0.12" />
     <PackageReference Include="Collapsenav.Net.Tool" Version="1.3.2" />
+    <None Include="./AppConfig.json" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
   </ItemGroup>
 
 </Project>
