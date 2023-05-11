@@ -27,6 +27,10 @@ public class SimpleJsonConfiguration
 
     public SimpleJsonConfiguration(string path, bool reloadOnChanage) : this()
     {
+        Add(path, reloadOnChanage);
+    }
+    public SimpleJsonConfiguration Add(string path, bool reloadOnChanage)
+    {
         if (!Path.IsPathRooted(path))
             path = Path.GetFullPath(path);
         JsonNodes.Add(path, path.GetJsonObjectFromPath());
@@ -42,6 +46,7 @@ public class SimpleJsonConfiguration
             watcher.EnableRaisingEvents = true;
             Watchers.Add(watcher);
         }
+        return this;
     }
 
     public T Get<T>(string nodePath)

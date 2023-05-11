@@ -50,14 +50,23 @@ public class ObjContainer
         if (keys.Count() > 1)
             throw new Exception($"无法创建 {type.ToString()} 类型的依赖, 容器中匹配到多个适用的类型");
         if (keys.Count() == 1)
-            return ObjMap[keys.First()];
+        {
+            var keyType = keys.First();
+            if (ObjMap[keys.First()] != null)
+                return ObjMap[keyType];
+            else
+            {
+                ObjMap[keyType] = ConstructObject(keys.First());
+                return ObjMap[keyType];
+            }
+        }
 
         var types = Types.Where(item => item.IsType(type));
         if (types.Count() != 1)
             throw new Exception($"无法创建 {type.ToString()} 类型的依赖, 容器中未注册对应的类型");
         var obj = ConstructObject(types.First());
-        if (obj != null)
-            AddOrUpdate(type, obj);
+        // if (obj != null)
+        //     AddOrUpdate(type, obj);
         return obj;
     }
     /// <summary>

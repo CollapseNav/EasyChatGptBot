@@ -5,14 +5,21 @@ namespace EasyChatGptBot;
 public class BaseChatSession : IOpenAiChatSession
 {
     private readonly OpenAIConfig config;
+    private readonly OpenAIChatConfig chatConfig;
     private readonly HttpClient client;
     protected string AiContent = string.Empty;
 
-    public BaseChatSession(OpenAIConfig config, HttpClient client)
+    public BaseChatSession(IConfig<OpenAIConfig> config, IConfig<OpenAIChatConfig> chatConfig, IConfig<AiContent> content, HttpClient client)
     {
-        this.config = config;
+        this.config = config.Data;
+        this.chatConfig = chatConfig.Data;
         this.client = client;
         History = new Queue<OpenAIChatUnit>();
+        if (this.chatConfig.DefaultContent.NotEmpty())
+        {
+            var prompt = content.Data.GetPrompt(this.chatConfig.DefaultContent);
+            SetContent(prompt);
+        }
     }
 
     public Queue<OpenAIChatUnit> History { get; protected set; }
@@ -55,5 +62,10 @@ public class BaseChatSession : IOpenAiChatSession
         return result;
     }
     public virtual void Reset() => History.Clear();
-    public void SetContent(string text) => AiContent = text;
+    public void SetContent(string text)
+    {
+        Reset();
+        AiContent = text;
+        History.Enqueue(new OpenAIChatUnit(OpenAIRoleEnum.system.ToString(), AiContent));
+    }
 }
