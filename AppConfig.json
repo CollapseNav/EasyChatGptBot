@@ -6,6 +6,7 @@
         "DefaultContent": "猫娘"
     },
     "OpenAIConfig": {
+        "ApiKey": ""
     },
     "Content": {
         "DefaultPrompt": {
